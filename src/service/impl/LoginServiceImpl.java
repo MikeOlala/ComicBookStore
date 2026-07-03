@@ -38,23 +38,19 @@ public class LoginServiceImpl implements LoginService {
 
         LocalDateTime now = LocalDateTime.now();
 
-        if (user.isLockedOut()) {
+        if (isLockedOut(email)) {
             recordLog(email, "CREDENTIALS", "LOCKED_OUT");
-            throw new ValidationException("Tài khoản đang bị khóa tạm thời. Thử lại sau: " + user.getLockoutUntil());
+            throw new ValidationException("Tài khoản đang bị khóa tạm thời. Thử lại sau: " + getLockoutUntil(email));
         }
 
         String hashedInput = PasswordEncryptor.encrypt(request.getPassword());
         if (user.getPassword().equals(hashedInput)) {
-            user.setFailedLoginAttempts(0);
-            user.setLockoutUntil(null);
             recordLog(email, "CREDENTIALS", "SUCCESS");
             return user;
         } else {
-            int failed = user.getFailedLoginAttempts() + 1;
-            user.setFailedLoginAttempts(failed);
+            int failed = getFailedLoginAttempts(email) + 1;
 
             if (failed >= 5) {
-                user.setLockoutUntil(now.plusMinutes(15));
                 recordLog(email, "CREDENTIALS", "LOCKED");
                 throw new ValidationException("Tài khoản đã bị khóa 15 phút do nhập sai 5 lần.");
             } else {
@@ -79,10 +75,44 @@ public class LoginServiceImpl implements LoginService {
             throw new ValidationException("Tài khoản Google chưa được đăng ký trong hệ thống.");
         }
 
-        user.setFailedLoginAttempts(0);
-        user.setLockoutUntil(null);
         recordLog(email, "GOOGLE", "SUCCESS");
         return user;
+    }
+
+    private int getFailedLoginAttempts(String email) {
+        int count = 0;
+        for (int i = FakeDatabase.LOGIN_LOGS.size() - 1; i >= 0; i--) {
+            LoginLog log = FakeDatabase.LOGIN_LOGS.get(i);
+            if (log.getEmail().equalsIgnoreCase(email)) {
+                if ("SUCCESS".equals(log.getStatus()) || "LOCKED".equals(log.getStatus())) {
+                    break;
+                }
+                if ("FAILED".equals(log.getStatus())) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private LocalDateTime getLockoutUntil(String email) {
+        for (int i = FakeDatabase.LOGIN_LOGS.size() - 1; i >= 0; i--) {
+            LoginLog log = FakeDatabase.LOGIN_LOGS.get(i);
+            if (log.getEmail().equalsIgnoreCase(email)) {
+                if ("SUCCESS".equals(log.getStatus())) {
+                    return null;
+                }
+                if ("LOCKED".equals(log.getStatus())) {
+                    return log.getTimestamp().plusMinutes(15);
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean isLockedOut(String email) {
+        LocalDateTime lockoutUntil = getLockoutUntil(email);
+        return lockoutUntil != null && lockoutUntil.isAfter(LocalDateTime.now());
     }
 
     private void recordLog(String email, String method, String status) {
