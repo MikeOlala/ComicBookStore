@@ -15,16 +15,15 @@ public class ShippedState implements OrderState {
 
     @Override
     public void next(Order order) {
+    }
 
-        // Trạng thái cuối, không chuyển tiếp.
-
+    @Override
+    public void cancel(Order order) {
     }
 
     @Override
     public String getStateName() {
-
         return "Shipped";
-
     }
 
 }

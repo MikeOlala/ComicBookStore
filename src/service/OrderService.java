@@ -1,40 +1,47 @@
 package service;
 
-import dto.OrderRequest;
+import dto.*;
 import exception.DatabaseException;
 import exception.InvalidOrderException;
 import exception.OutOfStockException;
-import model.Order;
+import model.*;
 
-/**
- * ============================================================================
- * Interface: OrderService
- * ----------------------------------------------------------------------------
- * Use Case:
- *      UC_5 Place Order
- *
- * Chịu trách nhiệm xử lý nghiệp vụ đặt hàng.
- * ============================================================================
- */
+import java.util.List;
+import java.util.Map;
+
 public interface OrderService {
 
-    /**
-     * Đặt hàng.
-     *
-     * Basic Flow
-     * BF5.7 Validate dữ liệu
-     * BF5.8 Kiểm tra tồn kho
-     * BF5.9 Tạo Order
-     * BF5.10 Lưu Order
-     * BF5.11 Cập nhật tồn kho
-     * BF5.12 Thông báo thành công
-     *
-     * @param request OrderRequest
-     * @return Order
-     */
     Order placeOrder(OrderRequest request)
-            throws InvalidOrderException,
-            OutOfStockException,
-            DatabaseException;
+            throws InvalidOrderException, OutOfStockException, DatabaseException;
 
+    List<Order> getOrders(Map<String, String> filters);
+
+    Order getOrderDetails(int orderID);
+
+    Order processApproval(int orderID) throws Exception;
+
+    Order processCancellation(int orderID, String reason) throws Exception;
+
+    TrackingInfo processAutoAssignment(int orderID);
+
+    TrackingInfo processAssignment(int orderID, long shipperID);
+
+    void processUpdateInfo(int orderID, Map<String, String> info);
+
+    void processRefund(int orderID);
+
+    void updateStatus(int orderID, String status);
+
+    String generateTrackingCode();
+
+    String regenerateTrackingCode();
+
+    // DTO-returning methods (from drawio)
+    ApprovalResult approveOrder(int orderID);
+    CancellationResult cancelOrder(int orderID, String reason);
+    AssignmentResult assignShipper(int orderID, long shipperID);
+    AssignmentResult autoAssignShipper(int orderID);
+    RefundResult refundOrder(int orderID);
+    OrderDetails getOrderDetailsDTO(int orderID);
+    ValidationResult validateOrderForCancellation(int orderID);
 }
