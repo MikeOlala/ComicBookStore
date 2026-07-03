@@ -1,4 +1,4 @@
-package demo;
+package demo.uc_order_history;
 
 import controller.OrderHistoryController;
 import model.*;
@@ -10,16 +10,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * UC_LH - Demo Xem lich su mua hang
- *
- * Chay cac scenario:
- *   A. Basic Flow: xem danh sach -> xem chi tiet
- *   B. Alternative Flow A1: mua lai don cu
- *   C. Alternative Flow A2: yeu cau doi/tra
- *   D. Exception Flow E1: khach hang chua co don hang
- *   E. Exception Flow E2: yeu cau doi/tra qua 7 ngay
- */
 public class DemoOrderHistory {
 
     static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
