@@ -16,16 +16,17 @@ public class ProcessingState implements OrderState {
 
     @Override
     public void next(Order order) {
-
         order.setState(new ShippedState());
+    }
 
+    @Override
+    public void cancel(Order order) {
+        order.setState(new CancelledState());
     }
 
     @Override
     public String getStateName() {
-
         return "Processing";
-
     }
 
 }

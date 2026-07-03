@@ -21,18 +21,10 @@ import model.Order;
  */
 public interface OrderState {
 
-    /**
-     * Chuyển sang trạng thái kế tiếp.
-     *
-     * @param order Order cần cập nhật
-     */
     void next(Order order);
 
-    /**
-     * Tên trạng thái.
-     *
-     * @return trạng thái hiện tại
-     */
+    void cancel(Order order);
+
     String getStateName();
 
 }
