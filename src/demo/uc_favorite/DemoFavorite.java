@@ -7,7 +7,7 @@ import dto.RegisterRequest;
 import exception.ValidationException;
 import model.Customer;
 import model.Favorite;
-import model.Story;
+import model.ComicBook;
 import view.FavoriteUI;
 
 public class DemoFavorite {
@@ -15,10 +15,10 @@ public class DemoFavorite {
     public static void main(String[] args) {
         try {
             System.out.println("==================================================");
-            System.out.println("         DEMO: FOLLOW & FAVORITE STORY FLOW        ");
+            System.out.println("     DEMO: FOLLOW & FAVORITE COMIC BOOK FLOW      ");
             System.out.println("==================================================");
 
-            // 1. Setup customer and story
+            // 1. Setup customer and comic book
             RegisterController registerController = new RegisterController();
             RegisterRequest registerRequest = new RegisterRequest(
                     "User Test",
@@ -29,53 +29,52 @@ public class DemoFavorite {
             Customer customer = registerController.register(registerRequest);
             System.out.println("Registered User: ID=" + customer.getUserId() + ", Email=" + customer.getEmail());
 
-            Story story = new Story(1001, "Doraemon", "Fujiko F. Fujio", "COMPLETED");
-            FakeDatabase.STORIES.add(story);
-            System.out.println("Available Story: ID=" + story.getStoryId() + ", Title=\"" + story.getTitle() + "\"");
+            ComicBook comicBook = FakeDatabase.COMIC_BOOKS.get(0);
+            System.out.println("Available ComicBook: ID=" + comicBook.getComicId() + ", Title=\"" + comicBook.getTitle() + "\"");
 
             FavoriteController favoriteController = new FavoriteController();
             FavoriteUI favoriteUI = new FavoriteUI();
 
             // Display UI button state initially
-            favoriteUI.showFollowButton(story);
+            favoriteUI.showFollowButton(comicBook);
             favoriteUI.updateFollowStatus(false);
 
             // ========================================================================
-            // SCENARIO 1: Follow story when not logged in (E1: 401 Unauthorized)
+            // SCENARIO 1: Follow comic book when not logged in (E1: 401 Unauthorized)
             // ========================================================================
             System.out.println("\n--- [Scenario 1: Not Logged In (E1 Flow)] ---");
-            System.out.println("Attempting to follow story (ID=1001) while logged out...");
+            System.out.println("Attempting to follow comic book (ID=" + comicBook.getComicId() + ") while logged out...");
             try {
-                favoriteController.addFavorite(customer.getUserId(), story.getStoryId());
+                favoriteController.addFavorite(customer.getUserId(), comicBook.getComicId());
             } catch (ValidationException ex) {
                 System.out.println("Denied (Expected): " + ex.getMessage());
                 favoriteUI.redirectLogin();
             }
 
             // ========================================================================
-            // SCENARIO 2: Follow story when logged in (Basic Flow)
+            // SCENARIO 2: Follow comic book when logged in (Basic Flow)
             // ========================================================================
             System.out.println("\n--- [Scenario 2: Logged In (Basic Flow)] ---");
             System.out.println("Logging in user...");
             customer.login();
             System.out.println("User login status: " + customer.isLoggedIn());
 
-            System.out.println("Attempting to follow story (ID=1001) now...");
-            Favorite favorite = favoriteController.addFavorite(customer.getUserId(), story.getStoryId());
+            System.out.println("Attempting to follow comic book (ID=" + comicBook.getComicId() + ") now...");
+            Favorite favorite = favoriteController.addFavorite(customer.getUserId(), comicBook.getComicId());
             favoriteUI.showSuccessMessage("Favorite Record Created successfully!");
             System.out.println(" - Favorite ID: " + favorite.getFavoriteId());
             System.out.println(" - User Email: " + favorite.getUser().getEmail());
-            System.out.println(" - Story Title: " + favorite.getStory().getTitle());
+            System.out.println(" - ComicBook Title: " + favorite.getComicBook().getTitle());
             System.out.println(" - Created At: " + favorite.getCreatedAt());
             favoriteUI.updateFollowStatus(true);
 
             // ========================================================================
-            // SCENARIO 3: Follow already followed story (E2 Warning)
+            // SCENARIO 3: Follow already followed comic book (E2 Warning)
             // ========================================================================
             System.out.println("\n--- [Scenario 3: Already Followed (E2 Flow)] ---");
-            System.out.println("Attempting to follow the same story (ID=1001) again...");
+            System.out.println("Attempting to follow the same comic book (ID=" + comicBook.getComicId() + ") again...");
             try {
-                favoriteController.addFavorite(customer.getUserId(), story.getStoryId());
+                favoriteController.addFavorite(customer.getUserId(), comicBook.getComicId());
             } catch (ValidationException ex) {
                 favoriteUI.showWarningMessage("Warning/Denied (Expected): " + ex.getMessage());
             }

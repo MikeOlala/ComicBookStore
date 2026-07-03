@@ -10,7 +10,6 @@ import model.Order;
 import model.Payment;
 import model.User;
 import model.LoginLog;
-import model.Story;
 import model.Favorite;
 /**
  * ============================================================================
@@ -26,7 +25,6 @@ public final class FakeDatabase {
     public static final List<Payment> PAYMENTS = new ArrayList<>();
     public static final List<LoginLog> LOGIN_LOGS = new ArrayList<>();
     public static final List<Favorite> FAVORITES = new ArrayList<>();
-    public static final List<Story> STORIES = new ArrayList<>();
 
     public static final List<TrendData> TREND_DATA_LIST = new ArrayList<>();
     public static final List<AnalysisResult> ANALYSIS_RESULTS = new ArrayList<>();

@@ -1,8 +1,8 @@
 package repository;
 
 import database.FakeDatabase;
+import model.ComicBook;
 import model.Favorite;
-import model.Story;
 import model.User;
 
 /**
@@ -14,17 +14,17 @@ import model.User;
  */
 public class FavoriteDAO {
 
-    public boolean checkExists(int userId, int storyId) {
+    public boolean checkExists(int userId, int comicId) {
         for (Favorite fav : FakeDatabase.FAVORITES) {
             if (fav.getUser() != null && fav.getUser().getUserId() == userId
-                    && fav.getStory() != null && fav.getStory().getStoryId() == storyId) {
+                    && fav.getComicBook() != null && fav.getComicBook().getComicId() == comicId) {
                 return true;
             }
         }
         return false;
     }
 
-    public Favorite createFavorite(int userId, int storyId) {
+    public Favorite createFavorite(int userId, int comicId) {
         User user = null;
         for (User u : FakeDatabase.USERS) {
             if (u.getUserId() == userId) {
@@ -33,15 +33,15 @@ public class FavoriteDAO {
             }
         }
 
-        Story story = null;
-        for (Story s : FakeDatabase.STORIES) {
-            if (s.getStoryId() == storyId) {
-                story = s;
+        ComicBook comicBook = null;
+        for (ComicBook cb : FakeDatabase.COMIC_BOOKS) {
+            if (cb.getComicId() == comicId) {
+                comicBook = cb;
                 break;
             }
         }
 
-        if (user == null || story == null) {
+        if (user == null || comicBook == null) {
             return null;
         }
 
@@ -52,7 +52,7 @@ public class FavoriteDAO {
             }
         }
 
-        Favorite favorite = new Favorite(nextFavId, user, story);
+        Favorite favorite = new Favorite(nextFavId, user, comicBook);
         favorite.addFavorite(); // Thiết lập quan hệ
         FakeDatabase.FAVORITES.add(favorite);
         return favorite;

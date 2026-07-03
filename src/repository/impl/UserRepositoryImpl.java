@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
     /**
      * Sinh ID tự động.
      */
-    private static int nextUserId = 1;
+    private static int nextUserId = 1000;
 
     @Override
     public boolean save(Customer customer) {
