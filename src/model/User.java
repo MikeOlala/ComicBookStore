@@ -9,6 +9,9 @@ public abstract class User {
     protected String email;
     protected String password;
 
+    protected String username;
+    protected boolean loggedIn = false;
+
     // Track failed logins and lockouts (UC-1.1)
     private int failedLoginAttempts = 0;
     private LocalDateTime lockoutUntil = null;
@@ -87,5 +90,25 @@ public abstract class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void login() {
+        this.loggedIn = true;
+    }
+
+    public void logout() {
+        this.loggedIn = false;
+    }
+
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
