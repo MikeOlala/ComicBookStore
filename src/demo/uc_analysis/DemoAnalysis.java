@@ -22,7 +22,7 @@ public class DemoAnalysis {
             RegisterController registerController = new RegisterController();
             RegisterRequest registerRequest = new RegisterRequest(
                     "Nguyen Van A",
-                    "vana@gmail.com",
+                    "vana1@gmail.com",
                     "123456",
                     "123456"
             );

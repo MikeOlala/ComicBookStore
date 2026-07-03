@@ -28,10 +28,7 @@ public abstract class User {
         this.password = password;
 
     }
-
-    public boolean isLockedOut() {
-        return lockoutUntil != null && lockoutUntil.isAfter(LocalDateTime.now());
-    }
+    
 
     public int getUserId() {
         return userId;
