@@ -9,6 +9,9 @@ public abstract class User {
     protected String email;
     protected String password;
 
+    protected String username;
+    protected boolean loggedIn = false;
+    
     private String status = "ACTIVE";
 
     public User() {
@@ -24,6 +27,10 @@ public abstract class User {
         this.email = email;
         this.password = password;
 
+    }
+
+    public boolean isLockedOut() {
+        return lockoutUntil != null && lockoutUntil.isAfter(LocalDateTime.now());
     }
 
     public int getUserId() {
@@ -64,5 +71,25 @@ public abstract class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void login() {
+        this.loggedIn = true;
+    }
+
+    public void logout() {
+        this.loggedIn = false;
+    }
+
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

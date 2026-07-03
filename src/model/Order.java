@@ -1,5 +1,6 @@
 package model;
 
+import state.CancelledState;
 import state.OrderState;
 import state.PendingState;
 
@@ -59,19 +60,15 @@ public class Order {
      */
     private String phoneNumber;
 
-    /**
-     * State Pattern.
-     */
     private OrderState state;
 
+    private String cancellationReason;
+    private TrackingInfo trackingInfo;
+
     public Order() {
-
         orderItems = new ArrayList<>();
-
         orderDate = LocalDateTime.now();
-
         state = new PendingState();
-
     }
 
     /**
@@ -104,9 +101,11 @@ public class Order {
      * State Pattern.
      */
     public void nextState() {
-
         state.next(this);
+    }
 
+    public void cancelState() {
+        state.cancel(this);
     }
 
     public int getOrderId() {
@@ -160,4 +159,10 @@ public class Order {
     public void setState(OrderState state) {
         this.state = state;
     }
+
+    public String getCancellationReason() { return cancellationReason; }
+    public void setCancellationReason(String cancellationReason) { this.cancellationReason = cancellationReason; }
+    public TrackingInfo getTrackingInfo() { return trackingInfo; }
+    public void setTrackingInfo(TrackingInfo trackingInfo) { this.trackingInfo = trackingInfo; }
+
 }

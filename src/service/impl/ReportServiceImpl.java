@@ -4,9 +4,14 @@ import database.FakeDatabase;
 import model.AnalysisReport;
 import model.Order;
 import model.Payment;
-import state.ShippedState;
+import model.ReportData;
+import model.TrendData;
+import repository.impl.AnalysisRepositoryImpl;
 import service.ReportService;
+import state.ShippedState;
+import util.OoxmlExporter;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
@@ -83,5 +88,53 @@ public class ReportServiceImpl implements ReportService {
                            ", GeneratedAt=" + report.getCreatedAt());
         System.out.println("[SERVICE] Excel file successfully downloaded to client device.");
         return true;
+    }
+
+    /* ================================================================
+       Trend report methods (from drawio)
+       ================================================================ */
+    @Override
+    public File generateReport(long analysisID) {
+        System.out.println("[SERVICE] Generating trend report for analysis #" + analysisID);
+        AnalysisRepositoryImpl repo = new AnalysisRepositoryImpl();
+        model.AnalysisResult result = repo.findById(analysisID);
+        if (result == null) {
+            System.out.println("[SERVICE] Analysis result not found!");
+            return null;
+        }
+        try {
+            return OoxmlExporter.exportTrendReport(result);
+        } catch (Exception e) {
+            System.out.println("[SERVICE] Report generation failed: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public ReportData getReportData(long analysisID) {
+        System.out.println("[SERVICE] Getting report data for analysis #" + analysisID);
+        return FakeDatabase.REPORT_DATA_LIST.stream()
+                .filter(rd -> rd.getAnalysisID() == analysisID)
+                .findFirst().orElse(null);
+    }
+
+    @Override
+    public byte[] exportToPDF(ReportData data) {
+        if (data == null) {
+            System.out.println("[SERVICE] Export PDF failed: data is null.");
+            return new byte[0];
+        }
+        System.out.println("[SERVICE] Exporting report #" + data.getReportID() + " to PDF...");
+        return "PDF content placeholder".getBytes();
+    }
+
+    @Override
+    public byte[] exportToExcel(ReportData data) {
+        if (data == null) {
+            System.out.println("[SERVICE] Export Excel failed: data is null.");
+            return new byte[0];
+        }
+        System.out.println("[SERVICE] Exporting report #" + data.getReportID() + " to Excel...");
+        return "Excel content placeholder".getBytes();
     }
 }
