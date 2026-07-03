@@ -14,16 +14,16 @@ public class Favorite {
     private int favoriteId;
     private Date createdAt;
     private User user;
-    private Story story;
+    private ComicBook comicBook;
 
     public Favorite() {
         this.createdAt = new Date();
     }
 
-    public Favorite(int favoriteId, User user, Story story) {
+    public Favorite(int favoriteId, User user, ComicBook comicBook) {
         this.favoriteId = favoriteId;
         this.user = user;
-        this.story = story;
+        this.comicBook = comicBook;
         this.createdAt = new Date();
     }
 
@@ -33,7 +33,7 @@ public class Favorite {
     public void addFavorite() {
         System.out.println("Favorite relation established between User: " 
                 + (user != null ? user.getEmail() : "null") 
-                + " and Story: " + (story != null ? story.getTitle() : "null"));
+                + " and ComicBook: " + (comicBook != null ? comicBook.getTitle() : "null"));
     }
 
     /**
@@ -42,9 +42,9 @@ public class Favorite {
     public void removeFavorite() {
         System.out.println("Favorite relation removed between User: " 
                 + (user != null ? user.getEmail() : "null") 
-                + " and Story: " + (story != null ? story.getTitle() : "null"));
+                + " and ComicBook: " + (comicBook != null ? comicBook.getTitle() : "null"));
         this.user = null;
-        this.story = null;
+        this.comicBook = null;
     }
 
     // Getters and Setters
@@ -73,11 +73,11 @@ public class Favorite {
         this.user = user;
     }
 
-    public Story getStory() {
-        return story;
+    public ComicBook getComicBook() {
+        return comicBook;
     }
 
-    public void setStory(Story story) {
-        this.story = story;
+    public void setComicBook(ComicBook comicBook) {
+        this.comicBook = comicBook;
     }
 }

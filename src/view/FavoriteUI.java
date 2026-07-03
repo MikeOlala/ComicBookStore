@@ -1,6 +1,6 @@
 package view;
 
-import model.Story;
+import model.ComicBook;
 
 /**
  * ============================================================================
@@ -11,10 +11,10 @@ import model.Story;
  */
 public class FavoriteUI {
 
-    public void showFollowButton(Story story) {
-        if (story != null) {
-            System.out.println("[UI - Favorite Button] Displaying 'Follow' button for story: \"" 
-                    + story.getTitle() + "\"");
+    public void showFollowButton(ComicBook comicBook) {
+        if (comicBook != null) {
+            System.out.println("[UI - Favorite Button] Displaying 'Follow' button for comic book: \"" 
+                    + comicBook.getTitle() + "\"");
         }
     }
 

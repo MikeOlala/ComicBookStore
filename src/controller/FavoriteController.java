@@ -24,7 +24,7 @@ public class FavoriteController {
     /**
      * Thêm truyện vào danh sách yêu thích/theo dõi.
      */
-    public Favorite addFavorite(int userId, int storyId) throws ValidationException {
+    public Favorite addFavorite(int userId, int comicId) throws ValidationException {
         
         // 1. Kiểm tra đăng nhập (E1) - ném lỗi ValidationException chứa thông báo 401
         if (!checkLogin(userId)) {
@@ -32,15 +32,15 @@ public class FavoriteController {
         }
 
         // 2. Validate dữ liệu đầu vào
-        validateFavorite(userId, storyId);
+        validateFavorite(userId, comicId);
 
         // 3. Kiểm tra xem truyện đã được theo dõi chưa (E2)
-        if (favoriteDAO.checkExists(userId, storyId)) {
-            throw new ValidationException("E2: Story is already in your favorite list.");
+        if (favoriteDAO.checkExists(userId, comicId)) {
+            throw new ValidationException("E2: ComicBook is already in your favorite list.");
         }
 
         // 4. Tạo bản ghi theo dõi mới
-        return favoriteDAO.createFavorite(userId, storyId);
+        return favoriteDAO.createFavorite(userId, comicId);
     }
 
     /**
@@ -58,12 +58,12 @@ public class FavoriteController {
     /**
      * Xác thực dữ liệu yêu cầu theo dõi.
      */
-    public void validateFavorite(int userId, int storyId) throws ValidationException {
+    public void validateFavorite(int userId, int comicId) throws ValidationException {
         if (userId <= 0) {
             throw new ValidationException("Invalid User ID.");
         }
-        if (storyId <= 0) {
-            throw new ValidationException("Invalid Story ID.");
+        if (comicId <= 0) {
+            throw new ValidationException("Invalid ComicBook ID.");
         }
     }
 }
