@@ -22,7 +22,7 @@ public class DemoAnalysis {
             RegisterController registerController = new RegisterController();
             RegisterRequest registerRequest = new RegisterRequest(
                     "Nguyen Van A",
-                    "vana@gmail.com",
+                    "vana1@gmail.com",
                     "123456",
                     "123456"
             );
@@ -113,7 +113,6 @@ public class DemoAnalysis {
                 reportController.generateRevenueReport(emptyStart, emptyEnd, false);
             } catch (NoSuchElementException ex) {
                 System.out.println("[UI WARNING] " + ex.getMessage());
-                System.out.println("[UI ACTION] Returning to step 4 (Prompt filter settings).");
             }
 
             // Scenario D: Exception Flow 5c - Database Failure
@@ -124,10 +123,7 @@ public class DemoAnalysis {
                 System.out.println("[UI ERROR] " + ex.getMessage());
                 System.out.println("[UI ACTION] Terminating use case statistics view.");
             }
-
-            System.out.println("\n==================================================");
-            System.out.println("      DEMO UC-2.1 COMPLETED SUCCESSFULLY          ");
-            System.out.println("==================================================");
+            
 
         } catch (Exception ex) {
             ex.printStackTrace();

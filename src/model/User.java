@@ -11,10 +11,7 @@ public abstract class User {
 
     protected String username;
     protected boolean loggedIn = false;
-
-    // Track failed logins and lockouts (UC-1.1)
-    private int failedLoginAttempts = 0;
-    private LocalDateTime lockoutUntil = null;
+    
     private String status = "ACTIVE";
 
     public User() {
@@ -31,10 +28,7 @@ public abstract class User {
         this.password = password;
 
     }
-
-    public boolean isLockedOut() {
-        return lockoutUntil != null && lockoutUntil.isAfter(LocalDateTime.now());
-    }
+    
 
     public int getUserId() {
         return userId;
@@ -66,22 +60,6 @@ public abstract class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public int getFailedLoginAttempts() {
-        return failedLoginAttempts;
-    }
-
-    public void setFailedLoginAttempts(int failedLoginAttempts) {
-        this.failedLoginAttempts = failedLoginAttempts;
-    }
-
-    public LocalDateTime getLockoutUntil() {
-        return lockoutUntil;
-    }
-
-    public void setLockoutUntil(LocalDateTime lockoutUntil) {
-        this.lockoutUntil = lockoutUntil;
     }
 
     public String getStatus() {
